@@ -1,0 +1,16 @@
+{% extends "currency_app/base.html" %}
+
+{% block content %}
+    <h1>Построение графиков</h1>
+    <h3><a href="{% url 'index' %}" style="color: black; text-decoration: none; font-size: 18px;">На главную</a></h3>
+    <form method="post">
+        {% csrf_token %}
+        <p>{{ graph_form.start_date.label_tag }} {{ graph_form.start_date }}</p>
+        <p>{{ graph_form.end_date.label_tag }} {{ graph_form.end_date }}</p>
+        <table> <td>{{ graph_form.currencies.label_tag }}</td> <td>{{ graph_form.currencies }}</td></table>
+        <button type="submit">Загрузить график</button>
+    </form>
+    {% if graph_url %}
+        <img src="{% url 'graphview' %}" alt="Sample graph">
+    {% endif %}
+{% endblock %}

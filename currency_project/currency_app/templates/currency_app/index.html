@@ -1,0 +1,78 @@
+{% extends "currency_app/base.html" %}
+
+{% block content %}
+  <h1>Курсы валют</h1>
+  <form method="post">
+    {% csrf_token %}
+    <p>{{ form.start_date.label_tag }} {{ form.start_date }}</p>
+    <p>{{ form.end_date.label_tag }} {{ form.end_date }}</p>
+    <p>{{ form.currency.label_tag }} {{ form.currency }}</p>
+    <button type="submit" name="load_data">Загрузить данные</button>
+  </form>
+<h3><a href="{% url 'graph' %}" style="color: black; text-decoration: none; font-size: 18px;">Построить графики</a></h3>
+<!--  <h2>Курс валют на {{ last_date|date:"SHORT_DATE_FORMAT" }}</h2>-->
+{% if exchange_rates %}
+  <h2>Курс валюты с {{ currency_rates.first.date|date:"SHORT_DATE_FORMAT" }} по {{ currency_rates.last.date|date:"SHORT_DATE_FORMAT" }}</h2>
+
+  <table class="table collapsible-table">
+    <thead>
+      <tr>
+        <th>Дата</th>
+        <th>Код</th>
+        <th>Курс</th>
+        <th>Относительный рост</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for exchange_rate in exchange_rates %}
+
+        <tr>
+          <td>{{ exchange_rate.date|date:"SHORT_DATE_FORMAT" }}</td>
+          <td>{{ exchange_rate.country }}</td>
+          <td>{{ exchange_rate.rate }}</td>
+          <td>{{ exchange_rate.relative_change|floatformat:1 }}%</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+<!--  <table class="table collapsible-table">-->
+<!--    <thead>-->
+<!--      <tr>-->
+<!--        <th>Дата</th>-->
+<!--        <th>Курс</th>-->
+<!--        <th>Код</th>-->
+<!--      </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--      {% for rate in currency_rates %}-->
+<!--        <tr>-->
+<!--          <td>{{ rate.date|date:"SHORT_DATE_FORMAT" }}</td>-->
+<!--          <td>{{ rate.rate }}</td>-->
+<!--          <td>{{ rate.code }}</td>-->
+<!--        </tr>-->
+<!--      {% endfor %}-->
+<!--    </tbody>-->
+<!--  </table>-->
+
+  <h2>Коды валют различных стран</h2>
+  <table class="table collapsible-table">
+      <thead>
+        <tr>
+          <th>Валюта</th>
+          <th>Страна</th>
+          <th>Код</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for country in countries %}
+          <tr>
+            <td>{{ country.name }}</td>
+            <td>{{ country.code }}</td>
+            <td>{{ country.currency }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endif %}
+{% endblock %}

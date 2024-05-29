@@ -1,0 +1,20 @@
+.collapsible-table {
+  cursor: pointer;
+}
+
+.collapsible-table.collapsed td,
+.collapsible-table.collapsed th {
+  display: none;
+}
+
+.collapsible-table.collapsed tr {
+  display: block;
+}
+
+.collapsible-table.collapsed tr:first-child {
+  display: table-row;
+}
+
+.collapsible-table.collapsed tr:first-child th {
+  display: table-cell;
+}
